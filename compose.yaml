@@ -1,0 +1,19 @@
+services:
+  db:
+    image: mariadb:11.5.2
+    container_name: db-laravel
+    env_file:
+      - .db.env
+    ports:
+      - "3306:3306"
+    volumes:
+      - laravel-data:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "healthcheck.sh", "--su-mysql", "--connect", "--innodb_initialized" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  laravel-data:
+    driver: local
